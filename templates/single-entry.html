@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+{% if single_entry %}
 <div class="single-entry">
     <div class="single-title">{{single_entry.title}}</div>
     <pre class="single-body">{{single_entry.entry}}</pre>
 </div>
+{% else %}
+<div class="single-entry">
+    <div class="single-title">{{title}}</div>
+    <pre class="single-body">{{entry}}</pre>
+</div>
+{% endif %}
 {% endblock %}

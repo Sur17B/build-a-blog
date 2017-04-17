@@ -18,11 +18,14 @@ import webapp2
 import cgi
 import jinja2
 import os
+import logging
+import pdb
 from google.appengine.ext import db
 
 # set up jinja
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
+                        autoescape = True)
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -77,14 +80,12 @@ class BlogEntries(Handler):
 class ViewPostHandler(Handler):
     #handle viewing single post by entity id
     def render_single_entry(self, id, title="", entry="", error=""):
+
         single_entry = Entry.get_by_id(int(id), parent=None)
         self.render("single-entry.html", title=title, entry=entry, error=error, single_entry=single_entry)
+
     def get(self, id):
-        if id:
-            self.render_single_entry(id)
-        else:
-            self.render_single_entry(id, title = "nothing here!",
-                        post = "there is no post with id "+ str(id))
+        self.render_single_entry(id, "nothing here!","there is no post with id "+ str(id))
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
